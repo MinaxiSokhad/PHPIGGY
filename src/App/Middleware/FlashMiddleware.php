@@ -17,8 +17,11 @@ class FlashMiddleware implements MiddlewareInterface
         $this->view->addGlobal('errors', $_SESSION['errors'] ?? []); //nullish operator for check an empty value
         unset($_SESSION['errors']); //unset function is used to destroy the specific items or variables in array 
 
+
         $this->view->addGlobal('oldFormData', $_SESSION['oldFormData'] ?? []); //nullish operator for check an empty value
         unset($_SESSION['oldFormData']);
+
+
         $next(); //flashing is a concept of programming where data is deleted after a single request
     }
 }
