@@ -5,9 +5,11 @@ require __DIR__ . "/../../vendor/autoload.php";
 
 use Framework\App;
 use App\Config\Paths;
-use App\Controllers\{HomeController, AboutController};
+use Dotenv\Dotenv;
+//use App\Controllers\{HomeController, AboutController};
 use function App\Config\{registerRoutes, registerMiddleware}; //register the function 
-
+$dotenv = Dotenv::createImmutable(Paths::ROOT);
+$dotenv->load();
 //echo HomeController::class; class magic constant 
 $app = new App(Paths::SOURCE . "App/container-definitions.php");
 

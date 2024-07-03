@@ -18,4 +18,6 @@ function registerRoutes(App $app) //register the route and then autoload files
     $app->get('/about', [AboutController::class, 'about'/*pass/register About controller */]);
     $app->get('/register', [AuthController::class, 'registerView']); // routes the register authenticate controller and this method -> in registerview method render the register.php file
     $app->post('/register', [AuthController::class, 'register']); //register post method for receive the register data
+    $app->get('/login', [AuthController::class, 'loginView']);
+    $app->post('/login', [AuthController::class, 'login']);
 }

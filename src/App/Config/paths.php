@@ -8,4 +8,5 @@ class Paths
 {
     public const VIEW = __DIR__ . "/../views"; //setting base path
     public const SOURCE = __DIR__ . "/../../"; //this path should point to source directory of our project
+    public const ROOT = __DIR__ . "/../../../"; //this path should point to root directory
 }

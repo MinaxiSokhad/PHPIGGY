@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Framework;
 
 use ReflectionClass, ReflectionNamedType;
-use Framework\Exception\ContainerException;
+use Framework\Exceptions\ContainerException;
 
 class Container // create a container
 {
@@ -64,7 +64,7 @@ class Container // create a container
             return $this->resolved[$id];
         }
         $factory = $this->definitions[$id];
-        $dependency = $factory();
+        $dependency = $factory($this);
         $this->resolved[$id] = $dependency;
         return $dependency;
     }

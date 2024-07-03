@@ -23,10 +23,9 @@ class Validator
                 $ruleParams = [];
                 if (str_contains($rule, ':')) {
                     [$rule, $ruleParams] = explode(':', $rule); //it convert string into array
-
-
-                    dd($ruleParams);
-
+                     // min,18
+                    $ruleParams = explode(',', $ruleParams);
+                     //18 in rule params as array
                 }
                 $ruleValidator = $this->rules[$rule];
                 if ($ruleValidator->validate($formData, $fieldName, $ruleParams/*[]*/)) {
