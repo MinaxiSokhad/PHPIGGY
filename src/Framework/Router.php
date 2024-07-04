@@ -14,7 +14,8 @@ class Router
         $this->routes[] = [
             'path' => $path,
             'method' => strtoupper($method),
-            'controller' => $controller //register the controller
+            'controller' => $controller ,//register the controller
+            'middlewares'=> []
         ]; //this will create a multi dimentional array for storing routes 
         //print_r($this->routes);
     }
@@ -47,7 +48,10 @@ class Router
                 new $class;
 
             $action = fn () => $controllerInstance->{$function}();
-            foreach ($this->middlewares as $middleware) //looping through middleware
+
+            $allMiddleware = [...$route['middlewares'],...$this->middlewares];
+            // foreach ($this->middlewares as $middleware) //looping through middleware
+            foreach ($allMiddleware as $middleware) 
             {
                 $middlewareInstance = $container ?
                     $container->resolve($middleware) : //dependency injection in middleware
@@ -61,5 +65,10 @@ class Router
     public function addMiddleware(string $middleware)
     {
         $this->middlewares[] = $middleware; //add this parameter to the middleware array
+    }
+    public function addRouteMiddleware(string $middleware){
+        $lastRouteKey = array_key_last($this->routes);
+        $this->routes[$lastRouteKey]['middlewares'][]=$middleware;
+
     }
 }

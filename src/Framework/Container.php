@@ -7,6 +7,7 @@ namespace Framework;
 use ReflectionClass, ReflectionNamedType;
 use Framework\Exceptions\ContainerException;
 
+
 class Container // create a container
 {
     private array $definitions = [];
@@ -56,8 +57,10 @@ class Container // create a container
         //dd($reflactionClass);
     }
     public function get(string $id) //factory function
-    {
+    {   
+        // dd($this->definitions);
         if (!array_key_exists($id, $this->definitions)) {
+            
             throw new ContainerException("Class {$id} does not exist in container");
         }
         if (array_key_exists($id, $this->resolved)) {
