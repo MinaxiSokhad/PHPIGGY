@@ -39,11 +39,19 @@ class App
         $this->router->add('POST', $path, $controller); //add http method to our routes -> GET
         return $this;
     }
+    public function delete(string $path, array $controller)
+    {
+        $this->router->add('DELETE', $path, $controller); //add http method to our routes -> GET
+        return $this;
+    }
     public function addMiddleware(string $middleware)
     {
         $this->router->addMiddleware($middleware); //add  middleware method in router
     }
     public function add(string $middleware){
         $this->router->addRouteMiddleware($middleware);
+    }
+    public function setErrorHandler(array $controller){
+        $this->router->setErrorHandler($controller);
     }
 }

@@ -22,7 +22,7 @@ class Database{
              //$password = '';
          try{
              $this->connection = new PDO($dsn,$username,$password,[
-                PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC
+                /*PDO::ATTR_DEFAULT_FETCH_MODE*/ 19=>PDO::FETCH_ASSOC
              ]);
             }catch(PDOException $e){
              die("Unable to connect database");
@@ -44,4 +44,7 @@ class Database{
  public function id(){
     return $this->connection->lastInsertId();
  }
+ public function findAll(){
+   return $this->stmt->fetchAll();
+}
 }

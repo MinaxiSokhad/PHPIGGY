@@ -8,14 +8,19 @@ class Router
 { //create class router
     private array $routes = [];
     private array $middlewares = []; //create a middleware array
+    private array $errorHandler;
     public function add(string $method, string $path, array $controller)
     {
         $path = $this->normalizePath($path); //sending the path entered by developer to normalized it
+
+        $regexPath = preg_replace('#{[^/]+}#','([^/]+)',$path);
+
         $this->routes[] = [
             'path' => $path,
             'method' => strtoupper($method),
             'controller' => $controller ,//register the controller
-            'middlewares'=> []
+            'middlewares'=> [],
+            'regexPath' => $regexPath
         ]; //this will create a multi dimentional array for storing routes 
         //print_r($this->routes);
     }
@@ -29,16 +34,24 @@ class Router
     public function dispatch(string $path, string $method, Container $container = null)
     { //router dispatch method
         $path = $this->normalizePath($path);
-        $method = strtoupper($method);
-
+        $method = strtoupper($_POST['_METHOD'] ?? $method);
+        // dd($method);
         //echo $path . $method;//return path and method like phpiggy.local/sdgsgf-> output ->  /sdgsgf/GET 
         foreach ($this->routes as $route) {
             if (
-                !preg_match("#^{$route['path']}$#", $path) ||
+                !preg_match("#^{$route['regexPath']}$#", $path,$paramsValue) ||
                 $route['method'] !== $method
             ) { //^ is check beginning of pattern match and $ is check ending of the value is match
                 continue;
             }
+            array_shift($paramsValue);
+
+            preg_match_all('#{([^/]+)}#',$route['path'],$paramsKeys);
+
+            $paramsKeys = $paramsKeys[1];
+
+            $params = array_combine($paramsKeys,$paramsValue);
+            //dd($paramsKeys);
             //echo 'Route Found'; //print message if path and method are match
             [$class, $function] = $route['controller'];
 
@@ -47,7 +60,7 @@ class Router
                 $container->resolve($class) : //resolve method -> it provide dependency to the controller
                 new $class;
 
-            $action = fn () => $controllerInstance->{$function}();
+            $action = fn () => $controllerInstance->{$function}($params);
 
             $allMiddleware = [...$route['middlewares'],...$this->middlewares];
             // foreach ($this->middlewares as $middleware) //looping through middleware
@@ -61,6 +74,7 @@ class Router
             $action();
             return;
         }
+        $this->dispatchNotFound($container);
     }
     public function addMiddleware(string $middleware)
     {
@@ -70,5 +84,18 @@ class Router
         $lastRouteKey = array_key_last($this->routes);
         $this->routes[$lastRouteKey]['middlewares'][]=$middleware;
 
+    }
+    public function setErrorHandler(array $controller){
+        $this->errorHandler = $controller;
+    }
+    public function dispatchNotFound(Container $container){
+        [$class,$function]=$this->errorHandler;
+        $controllerInstance = $container ? $container->resolve($class) : new $class;
+        $action = fn () => $controllerInstance->$function();
+        foreach($this->middlewares as $middleware){
+            $middlewareInstance = $container ? $container->resolve($middleware) : new $class;
+            $action = fn () => $middlewareInstance->process($action);
+        }
+        $action();
     }
 }
