@@ -46,7 +46,7 @@ class ValidatorService
             'socialMediaURL' => ['required','url'],
             'password' => ['required','pass'],
             'confirmPassword' => ['required','match:password'],
-            'tos' => ['required'],
+            'tos' => ['required']
         ]);
     }
     public function validateLogin(array $formData){
@@ -60,6 +60,18 @@ class ValidatorService
             'description' => ['required','lengthMax:255'],
             'amount'=> ['required','numeric'],
             'date'=> ['required','dateFormat:Y-m-d']
+        ]);
+    }
+    public function validateProfile(array $formData)
+    {
+        $this->validator->validate($formData, [
+            'email' => ['required', 'email'], //apply email rules in alias
+            'age' => ['required', 'minmax:18','agerule'],
+            'country' => ['required','in:USA,Canada,Mexico'],
+            'socialMediaURL' => ['required','url'],
+            'password' => ['required','pass'],
+            'confirmPassword' => ['required','match:password']
+           
         ]);
     }
 }

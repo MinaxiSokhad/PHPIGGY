@@ -18,6 +18,22 @@ class UserService{
             
         }
     }
+    public function isEmailTakenProfile(string $email)
+    {
+        $emailCount = $this->db->query(
+            "SELECT COUNT(*) FROM users WHERE email =:email",
+            ['email' => $email ] )->count();
+
+            $emailFind = $this->db->query(
+                "SELECT * FROM users WHERE email= :email",
+                ['email' => $email]
+            )->find();
+        if($emailCount > 0){
+            if($email !== $emailFind['email']){
+            throw new ValidationException(['email'=>"Email Taken"]);
+            }
+        }
+    }
     public function create(array $formData){
         
          $password = password_hash($formData['password'],PASSWORD_BCRYPT,['cost'=>12]);

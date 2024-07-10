@@ -11,7 +11,8 @@ use App\Controllers\{
     AuthController,
     TransactionController,
     ReceiptController,
-    ErrorController
+    ErrorController,
+    ProfileController
 };
 use App\Middleware\{AuthRequiredMiddleware,GuestOnlyMiddleware};
 
@@ -36,6 +37,9 @@ function registerRoutes(App $app) //register the route and then autoload files
     $app->delete('/transaction/{transaction}/receipt/{receipt}',[ReceiptController::class,'delete'])->add(AuthRequiredMiddleware::class);
 
     $app->setErrorHandler([ErrorController::class,'notfound']);
+
+    $app->get('/profile/{user}',[ProfileController::class,'profileView'])->add(AuthRequiredMiddleware::class);
+    $app->post('/profile/{user}',[ProfileController::class,'updateProfile'])->add(AuthRequiredMiddleware::class);
 }
 
 

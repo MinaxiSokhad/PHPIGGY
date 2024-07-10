@@ -11,7 +11,7 @@
             const socialMediaURL = document.getElementById('socialMediaURL');
             const password = document.getElementById('password');
             const confirmPassword = document.getElementById('confirmPassword');
-            const tos = document.getElementById('tos');
+           // const tos = document.getElementById('tos');
 
             const emailErr = document.getElementById('emailErr');
             const ageErr = document.getElementById('ageErr');
@@ -19,7 +19,7 @@
             const socialMediaURLErr = document.getElementById('socialMediaURLErr');
             const passwordErr = document.getElementById('passwordErr');
             const confirmPasswordErr = document.getElementById('confirmPasswordErr');
-            const tosErr = document.getElementById('tosErr');
+           // const tosErr = document.getElementById('tosErr');
 
            email.addEventListener('input',EmailRule);
            age.addEventListener('input',AgeRule);
@@ -27,7 +27,7 @@
            socialMediaURL.addEventListener('input',urlRule);
            password.addEventListener('input',passRule);
            confirmPassword.addEventListener('input',cPassRule);
-           tos.addEventListener('change',tosRule);
+          // tos.addEventListener('change',tosRule);
 
            register.addEventListener('submit',function(event){
             if (!validForm()) {
@@ -100,16 +100,16 @@
                     return true;
                 }
             }
-            function tosRule(){
-                if(!tos.checked){
-                    tosErr.textContent = "Must accept terms and condition ";
-                    return false;
-                }
-                else{
-                    tosErr.textContent='';
-                    return true;
-                }
-            }
+            // function tosRule(){
+            //     if(!tos.checked){
+            //         tosErr.textContent = "Must accept terms and condition ";
+            //         return false;
+            //     }
+            //     else{
+            //         tosErr.textContent='';
+            //         return true;
+            //     }
+            // }
 
             function validForm(){
                 let isValid = true;
@@ -119,17 +119,17 @@
                 isValid &= urlRule();
                 isValid &= passRule();
                 isValid &= cPassRule();
-                isValid &= tosRule();
+                //isValid &= tosRule();
                 return isValid;
             }
         });
     </script>
-    <form id="register" method="POST"  class="grid grid-cols-1 gap-6">
+    <form id="profile" method="POST"  class="grid grid-cols-1 gap-6">
     <?php include $this->resolve('partials/_csrf.php'); ?>
         <!-- Email -->
         <label class="block">
             <span class="text-gray-700">Email address</span>
-            <input id="email" value="<?php echo e($oldFormData['email'] ?? ''); ?>" name="email" type="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="john@example.com" />
+            <input id="email" value="<?php echo e($profile['email'] ?? ''); ?>" name="email" type="email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="john@example.com" />
            <div id="emailErr" class="mt-2 p-2 text-red-500">
            </div>
             <?php if (array_key_exists('email', $errors)) : ?>
@@ -142,7 +142,7 @@
         <!-- Age -->
         <label class="block">
             <span class="text-gray-700">Age</span>
-            <input id="age" value="<?php echo e($oldFormData['age'] ?? ''); ?>" name="age" type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
+            <input id="age" value="<?php echo e($profile['age'] ?? ''); ?>" name="age" type="number" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
             <div id="ageErr" class="mt-2 p-2 text-red-500"></div>
             <?php if (array_key_exists('age', $errors)) : ?>
                 <div class="bg-gray-100 mt-2 p-2 text-red-500">
@@ -157,8 +157,8 @@
             <span class="text-gray-700">Country</span>
             <select id="country" name="country" class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 <option value="USA">USA</option>
-                <option value="Canada" <?php echo ($oldFormData['country'] ?? '') === 'Canada' ? 'selected' : ''; ?>>Canada</option>
-                <option value="Mexico" <?php echo ($oldFormData['country'] ?? '') === 'Mexico' ? 'selected' : ''; ?>>Mexico</option>
+                <option value="Canada" <?php echo ($profile['country'] ?? '') === 'Canada' ? 'selected' : ''; ?>>Canada</option>
+                <option value="Mexico" <?php echo ($profile['country'] ?? '') === 'Mexico' ? 'selected' : ''; ?>>Mexico</option>
                 <option value="Invalid">Invalid Country</option>
             </select>
             <div id="countryErr" class="mt-2 p-2 text-red-500"></div>
@@ -173,7 +173,7 @@
         <!-- Social Media URL -->
         <label class="block">
             <span class="text-gray-700">Social Media URL</span>
-            <input id="socialMediaURL" value="<?php echo e($oldFormData['socialMediaURL'] ?? ''); ?>" name="socialMediaURL" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
+            <input id="socialMediaURL" value="<?php echo e($profile['social_media_url'] ?? ''); ?>" name="socialMediaURL" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
             <div id="socialMediaURLErr" class="mt-2 p-2 text-red-500"></div>
             <?php if (array_key_exists('socialMediaURL', $errors)) : ?>
                 <div class="bg-gray-100 mt-2 p-2 text-red-500">
@@ -186,7 +186,7 @@
         <!-- Password -->
         <label class="block">
             <span class="text-gray-700">Password</span>
-            <input id="password"  name="password" type="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
+            <input id="password" value="<?php //echo e($profile['password'] ?? ''); ?>" name="password" type="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
             <div id="passwordErr" class="mt-2 p-2 text-red-500"></div>
             <?php if (array_key_exists('password', $errors)) : ?>
                 <div class="bg-gray-100 mt-2 p-2 text-red-500">
@@ -199,7 +199,7 @@
         <!-- Confirm Password -->
         <label class="block">
             <span class="text-gray-700">Confirm Password</span>
-            <input id="confirmPassword" name="confirmPassword" type="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
+            <input id="confirmPassword" value="<?php //echo e($profile['password'] ?? ''); ?>" name="confirmPassword" type="password" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="" />
             <div id="confirmPasswordErr" class="mt-2 p-2 text-red-500"></div>
             <?php if (array_key_exists('confirmPassword', $errors)) : ?>
                 <div class="bg-gray-100 mt-2 p-2 text-red-500">
@@ -209,27 +209,9 @@
                 </div>
             <?php endif; ?>
         </label>
-        <!-- Terms of Service -->
-        <div class="block">
-            <div class="mt-2">
-                <div>
-                    <label class="inline-flex items-center">
-                        <input id="tos" <?php echo $oldFormData['tos'] ?? false ? 'checked' : ''; ?> name="tos" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" type="checkbox" />
-                        <span class="ml-2">I accept the terms of service.</span>
-                    </label>
-                    <div id="tosErr" class="mt-2 p-2 text-red-500"></div>
-                    <?php if (array_key_exists('tos', $errors)) : ?>
-                        <div class="bg-gray-100 mt-2 p-2 text-red-500">
-                            <?php echo e($errors['tos'][0]); //show error through looping -> one by one error is check and show it // [0] is display the first error message
-                            ?>
-
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
+        
         <button type="submit" class="block w-full py-2 bg-indigo-600 text-white rounded">
-            Submit
+            Update Profile
         </button>
     </form>
     <?php //dd($oldFormData); ?> 
