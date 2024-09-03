@@ -15,6 +15,8 @@ class ProfileService{
                 'id' => $_SESSION['user']
             ]
         )->find();
+
+        
     }
     public function updateData(array $formData){
         $password = password_hash($formData['password'],PASSWORD_BCRYPT,['cost'=>12]);
